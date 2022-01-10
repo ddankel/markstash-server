@@ -1,0 +1,50 @@
+{
+  "name": "markstash-server",
+  "version": "0.1.0",
+  "description": "MarkStash Backend Server",
+  "main": "index.js",
+  "repository": "https://github.com/ddankel/markstash-server.git",
+  "author": "Dave Dankel <ddankel@gmail.com>",
+  "private": true,
+  "scripts": {
+    "serve": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "test": "jest --watch --runInBand",
+    "coverage": "jest --coverage",
+    "migrate": "knex migrate:latest",
+    "debug": "nodemon src/debug.js"
+  },
+  "jest": {
+    "testMatch": [
+      "**/tests/**/*.(spec|test).[jt]s?(x)",
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "testEnvironment": "node",
+    "setupFiles": [
+      "<rootDir>/tests/config/setupTests.js"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/config/setupAfterEnv.js"
+    ]
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "knex": "^0.95.14",
+    "knex-utils": "^5.5.0",
+    "lodash": "^4.17.21",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "objection": "^3.0.0",
+    "strong-params": "https://github.com/ddankel/strong-params.git",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0"
+  },
+  "devDependencies": {
+    "fishery": "^2.1.0",
+    "jest": "^27.4.3",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6"
+  }
+}
