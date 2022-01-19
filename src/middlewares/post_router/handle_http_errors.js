@@ -1,3 +1,4 @@
+const { UnauthorizedError } = require("express-oauth2-jwt-bearer");
 const { HttpError } = require("../../lib/errors");
 
 /**
