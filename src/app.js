@@ -3,6 +3,8 @@ const express = require("express");
 const middlewares = require("./middlewares");
 const useSwagger = require("./server/swagger");
 
+const checkJwt = require("./middlewares/pre_router/auth0_authentication");
+
 // Server Configurations
 const app = express();
 require("express-async-errors");
@@ -24,24 +26,15 @@ app.use(require("./routers/links"));
 app.use(require("./routers/categories"));
 app.use(require("./routers/groups"));
 
-const { auth } = require("express-oauth2-jwt-bearer");
-const checkJwt = auth({
-  audience: process.env.AUTH0_AUDIENCE,
-  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}/`,
-});
-
 app.get("/api/public", (req, res) => {
   res.json({ message: "This is the public endpoint" });
 });
 
 app.get("/api/protected", checkJwt, async (req, res) => {
-  // const response = await fetch(`${serverUrl}/api/protected`, {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // });
+  console.log("IN PROTECTED");
+  // console.log(req.auth.payload); //.sub = unique id
 
-  // const responseData = await response.json();
+  req.auth = { payload: "foo" };
 
   console.log("---------");
   // console.log("req", req);
