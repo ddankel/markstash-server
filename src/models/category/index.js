@@ -16,12 +16,20 @@ class Category extends BaseModel {
 
   static get relationMappings() {
     return {
+      user: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: "User",
+        join: {
+          from: "categories.userPid",
+          to: "users.pid",
+        },
+      },
       collections: {
         relation: Model.HasManyRelation,
         modelClass: "Collection",
         join: {
           from: "categories.pid",
-          to: "collections.category_pid",
+          to: "collections.categoryPid",
         },
       },
     };

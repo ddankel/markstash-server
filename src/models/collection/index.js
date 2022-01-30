@@ -29,7 +29,7 @@ class Collection extends BaseModel {
         modelClass: "Group",
         join: {
           from: "collections.pid",
-          to: "groups.collection_pid",
+          to: "groups.collectionPid",
         },
       },
     };

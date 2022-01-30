@@ -11,6 +11,19 @@ class User extends BaseModel {
   static get jsonSchema() {
     return userSchema;
   }
+
+  static get relationMappings() {
+    return {
+      categories: {
+        relation: Model.HasManyRelation,
+        modelClass: "Category",
+        join: {
+          from: "users.pid",
+          to: "categories.userPid",
+        },
+      },
+    };
+  }
 }
 
 module.exports = User;
