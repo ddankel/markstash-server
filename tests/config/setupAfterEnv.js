@@ -1,4 +1,8 @@
 const { transaction, Model, knexSnakeCaseMappers } = require("objection");
+const toMatchIds = require("./setup/to_match_ids");
+
+// Import custom matchers
+expect.extend(toMatchIds);
 
 // Initialize knex.
 const config = {

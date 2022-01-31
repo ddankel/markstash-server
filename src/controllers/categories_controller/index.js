@@ -1,9 +1,9 @@
-const Category = require("../models/category");
+const Category = require("../../models/category");
 
 const strongParams = (req) => req.parameters.require("category").permit("title", "columns").value();
 
 exports.index = async (req, res) => {
-  const categories = await Category.query().orderBy("ordinal");
+  const categories = await req.currentUser.$relatedQuery("categories").orderBy("ordinal");
   res.sendData(categories);
 };
 

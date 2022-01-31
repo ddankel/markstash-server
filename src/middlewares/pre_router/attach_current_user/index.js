@@ -27,7 +27,7 @@ const attachCurrentUser = async (req, res, next) => {
       return u;
     });
 
-    req.current_user = user;
+    req.currentUser = user;
   }
   next();
 };

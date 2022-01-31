@@ -24,8 +24,8 @@ describe("when req.auth.payload.sub is undefined", () => {
     expect(subject).toBe(0);
   });
 
-  it("does not set req.current_user", () => {
-    expect(mockRequest.current_user).toBeUndefined();
+  it("does not set req.currentUser", () => {
+    expect(mockRequest.currentUser).toBeUndefined();
   });
 
   it("calls next()", () => {
@@ -47,8 +47,8 @@ describe("when the auth0Id does not match an existing user", () => {
     });
   });
 
-  it("sets req.current_user", () => {
-    expect(mockRequest.current_user).toMatchObject({
+  it("sets req.currentUser", () => {
+    expect(mockRequest.currentUser).toMatchObject({
       auth0Id,
       username: "new name",
     });
@@ -71,8 +71,8 @@ describe("when the auth0Id matches an existing user", () => {
     expect(subject.username).toBe("new name");
   });
 
-  it("sets req.current_user", () => {
-    expect(mockRequest.current_user).toMatchObject({
+  it("sets req.currentUser", () => {
+    expect(mockRequest.currentUser).toMatchObject({
       id: user.id,
       auth0Id: user.auth0Id,
       username: "new name",
