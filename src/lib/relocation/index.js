@@ -1,5 +1,5 @@
-const relocateCollection = require("./relocate_collection");
-const relocateGroup = require("./relocate_group");
+const relocateCollection = require("./relocateCollection");
+const relocateGroup = require("./relocateGroup");
 
 module.exports = {
   relocateCollection,

@@ -17,7 +17,7 @@ const extractNameFromSchemaFile = (file) => {
 const schemas = {};
 
 // Load all model schemas from the models directory into the schemas component.
-glob.sync("./src/models/**/*.schema.js").forEach((file) => {
+glob.sync("./src/models/schemas/**/*Schema.js").forEach((file) => {
   const schemaFile = path.resolve(file);
   const schemaName = extractNameFromSchemaFile(file);
   const schema = require(schemaFile);

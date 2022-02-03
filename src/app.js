@@ -3,7 +3,7 @@ const express = require("express");
 const middlewares = require("./middlewares");
 const useSwagger = require("./server/swagger");
 
-const checkJwt = require("./middlewares/pre_router/auth0_authentication");
+const checkJwt = require("./middlewares/preRouter/auth0Authentication");
 
 // Server Configurations
 const app = express();

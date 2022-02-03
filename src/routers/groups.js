@@ -1,6 +1,6 @@
 const express = require("express");
 const router = new express.Router();
-const GroupsController = require("../controllers/groups_controller");
+const GroupsController = require("../controllers/GroupsController");
 
 /**
  * @swagger

@@ -1,5 +1,5 @@
-const usePreRouteMiddlewares = require("./pre_router");
-const usePostRouteMiddlewares = require("./post_router");
+const usePreRouteMiddlewares = require("./preRouter");
+const usePostRouteMiddlewares = require("./postRouter");
 
 module.exports = {
   usePreRouteMiddlewares,
