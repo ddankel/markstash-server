@@ -14,6 +14,7 @@ const linkFactory = Factory.define(({ onCreate }) => {
   return {
     title: "Link Title",
     url: "https://www.example.com",
+    favicon: "https://github.com/apple-touch-icon.png",
   };
 });
 

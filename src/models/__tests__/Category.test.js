@@ -1,5 +1,6 @@
 const { ValidationError } = require("objection");
 const categoryFactory = require("../../../tests/factories/categoryFactory");
+const userFactory = require("../../../tests/factories/userFactory");
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -39,5 +40,16 @@ describe(".ordinal", () => {
     await expect(async () => {
       return await categoryFactory.create({ ordinal: 2 });
     }).rejects.toThrow(ValidationError);
+  });
+});
+
+describe("#owner", () => {
+  it("returns the parent's owner", async () => {
+    const user = await userFactory.create();
+    const category = await categoryFactory.create({ userPid: user.pid });
+
+    subject = await category.owner();
+
+    expect(subject).toEqual(await user.$reload());
   });
 });

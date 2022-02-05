@@ -39,3 +39,14 @@ describe(".ordinal", () => {
     expect(group.ordinal).toBe(2);
   });
 });
+
+describe("#owner", () => {
+  it("returns the parent's owner", async () => {
+    const collection = await collectionFactory.create();
+    const group = await groupFactory.create({ collectionPid: collection.pid });
+
+    subject = await group.owner();
+
+    expect(subject).toEqual(await collection.owner());
+  });
+});

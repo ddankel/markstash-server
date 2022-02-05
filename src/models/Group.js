@@ -35,6 +35,11 @@ class Group extends BaseModel {
     };
   }
 
+  async owner() {
+    const parent = await this.$relatedQuery("collection");
+    return parent.owner();
+  }
+
   /************************************************************
    *  CALLBACKS
    */

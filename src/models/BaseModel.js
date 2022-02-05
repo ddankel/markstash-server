@@ -47,7 +47,9 @@ class BaseModel extends Model {
    */
   async $beforeInsert(queryContext) {
     this.updatedAt = new Date();
+    this.updatedAt.setMilliseconds(0);
     this.createdAt = new Date();
+    this.createdAt.setMilliseconds(0);
     this.pid = await this.#uniquePID(queryContext.transaction);
 
     await this.$beforeSave({ ...this }, undefined, queryContext);
@@ -60,7 +62,9 @@ class BaseModel extends Model {
    * - Perform the onSave callback
    */
   async $beforeUpdate(opt, queryContext) {
+    delete this.createdAt;
     this.updatedAt = new Date();
+    this.updatedAt.setMilliseconds(0);
 
     const payload = { ...opt.old, ...this };
     await this.$beforeSave(payload, opt, queryContext);

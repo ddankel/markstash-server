@@ -16,10 +16,10 @@ class Link extends BaseModel {
 
   static get relationMappings() {
     return {
-      collection: {
+      group: {
         relation: Model.BelongsToOneRelation,
         modelClass: "Group",
-        joins: {
+        join: {
           from: "links.groupPid",
           to: "groups.pid",
         },
@@ -34,6 +34,21 @@ class Link extends BaseModel {
   async $beforeSave(payload, _opt, queryContext) {
     if (!payload.ordinal) await this.#assignDefaultOrdinal(payload, queryContext);
     await this.#validateUniqueOrdinal(payload, queryContext);
+  }
+
+  /************************************************************
+   *  PUBLIC INSTANCE METHODS
+   */
+
+  /**
+   * Fetch the owner of this instance, determined by its parent's owner
+   *
+   * @return  {User}
+   * @async
+   */
+  async owner() {
+    const parent = await this.$relatedQuery("group");
+    return parent.owner();
   }
 
   /************************************************************

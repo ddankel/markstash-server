@@ -33,13 +33,12 @@ describe("#create", () => {
   it("creates a new category", async () => {
     categories = await Category.query();
     expect(categories.length).toBe(1);
-    expect(categories[0]).toMatchObject({ title, columns });
+    expect(categories[0]).toMatchObject({ title, columns, userPid: currentUser.pid });
   });
 
   it("renders the new category (status 201)", async () => {
     const category = await Category.query().first();
-    expect(mock.renderedData()).toMatchObject({ title: category.title, columns: category.columns });
-    expect(mock.renderedData()).toMatchIds(category);
+    expect(mock.renderedData()).toMatchObject(category);
     expect(mock.status).toHaveBeenCalledWith(201);
   });
 });
@@ -47,7 +46,7 @@ describe("#create", () => {
 describe("#show", () => {
   beforeEach(async () => {
     category = await categoryFactory.create({ userPid: currentUser.pid });
-    mock = await mock.update({ params: { id: category.pid } });
+    mock = await mock.update({ params: { pid: category.pid } });
     await CategoriesController.show(mock.req, mock.res);
   });
 
@@ -64,7 +63,7 @@ describe("#update", () => {
       columns: 1,
     });
     mock = await mock.update({
-      params: { id: category.pid },
+      params: { pid: category.pid },
       strongParams: { title: "title2", columns: 3 },
     });
     await CategoriesController.update(mock.req, mock.res);
@@ -76,8 +75,7 @@ describe("#update", () => {
   });
 
   it("renders the updated category", async () => {
-    expect(mock.renderedData()).toMatchIds(category);
-    expect(mock.renderedData()).toMatchObject({ title: "title2", columns: 3 });
+    expect(mock.renderedData()).toMatchObject(await category.$reload());
   });
 });
 
@@ -88,7 +86,7 @@ describe("#destroy", () => {
       title: "title",
       columns: 1,
     });
-    mock = await mock.update({ params: { id: category.pid } });
+    mock = await mock.update({ params: { pid: category.pid } });
     await CategoriesController.destroy(mock.req, mock.res);
   });
 
@@ -97,8 +95,7 @@ describe("#destroy", () => {
     expect(categories.length).toBe(0);
   });
 
-  it("renders the destroyed categroy", async () => {
-    expect(mock.renderedData()).toMatchIds(category);
-    expect(mock.renderedData()).toMatchObject({ title: category.title, columns: category.columns });
+  it("renders the destroyed category", async () => {
+    expect(mock.renderedData()).toMatchObject(category);
   });
 });

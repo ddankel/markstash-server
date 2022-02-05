@@ -6,7 +6,7 @@ const strongParams = (req) =>
   req.parameters.require("collection").permit("title", "column").value();
 
 exports.index = async (req, res) => {
-  const category = await Category.findByPid(req.params.category_pid);
+  const category = await req.authorize(Category.findByPid(req.params.category_pid));
   const collections = await category
     .$relatedQuery("collections")
     .orderBy("column")
@@ -15,24 +15,24 @@ exports.index = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  const category = await Category.findByPid(req.params.category_pid);
+  const category = await req.authorize(Category.findByPid(req.params.category_pid));
   const collection = await category.$relatedQuery("collections").insert(strongParams(req));
-  res.sendData(collection);
+  res.status(201).sendData(collection);
 };
 
 exports.show = async (req, res) => {
-  const collection = await Collection.findByPid(req.params.id);
+  const collection = await req.authorize(Collection.findByPid(req.params.pid));
   res.sendData(collection);
 };
 
 exports.update = async (req, res) => {
-  const collection = await Collection.findByPid(req.params.id);
+  const collection = await req.authorize(Collection.findByPid(req.params.pid));
   await collection.$query().patch(strongParams(req));
   res.sendData(collection);
 };
 
 exports.destroy = async (req, res) => {
-  const collection = await Collection.findByPid(req.params.id);
+  const collection = await req.authorize(Collection.findByPid(req.params.pid));
   await Collection.query().deleteById(collection.id);
   res.sendData(collection);
 };
@@ -47,8 +47,8 @@ exports.relocate = async (req, res) => {
     res.respond.badRequest(undefined, { message: "Ordinal must be an integer greater than 0" });
   }
 
-  const collection = await Collection.findByPid(req.params.id);
-  const category = Category.findByPid(params.categoryPid);
+  const collection = await Collection.findByPid(req.params.pid);
+  const category = await Category.findByPid(params.categoryPid);
   const collections = await relocateCollection({
     collection,
     category,

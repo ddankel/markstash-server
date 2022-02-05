@@ -45,6 +45,14 @@ class Category extends BaseModel {
   }
 
   /************************************************************
+   *  PUBLIC INSTANCE METHODS
+   */
+
+  async owner() {
+    return this.$relatedQuery("user");
+  }
+
+  /************************************************************
    *  PRIVATE INSTANCE METHODS
    */
 

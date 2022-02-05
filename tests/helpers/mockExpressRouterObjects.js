@@ -33,7 +33,8 @@ const mockExpressRouterObjects = async ({ currentUser, strongParams, params }) =
 
   // Mock express request object
   const req = {
-    currentUser: _currentUser,
+    currentUser: _currentUser, //   Mocks attachCurrentUser middleware
+    authorize: (val) => val, //     Mocks attachAuthorizer middleware
     parameters: !!_strongParams ? mockStrongParams(_strongParams) : undefined,
     params: _params,
   };

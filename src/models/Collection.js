@@ -35,6 +35,11 @@ class Collection extends BaseModel {
     };
   }
 
+  async owner() {
+    const parent = await this.$relatedQuery("category");
+    return parent.owner();
+  }
+
   /************************************************************
    *  CALLBACKS
    */

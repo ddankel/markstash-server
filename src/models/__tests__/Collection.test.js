@@ -76,3 +76,14 @@ describe("on creation", () => {
     expect(subject[0].title).toBe("Default");
   });
 });
+
+describe("#owner", () => {
+  it("returns the parent's owner", async () => {
+    const category = await categoryFactory.create();
+    const collection = await collectionFactory.create({ categoryPid: category.pid });
+
+    subject = await collection.owner();
+
+    expect(subject).toEqual(await category.owner());
+  });
+});
