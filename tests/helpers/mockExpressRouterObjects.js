@@ -1,13 +1,19 @@
 const userFactory = require("../factories/userFactory");
 const mockStrongParams = require("./mockStrongParams");
 
-const mockExpressRouterObjects = async ({ currentUser, strongParams, params }) => {
+/**
+ * Mock express router objects for use in controller tests
+ *
+ * @param   {User}  currentUser     User to be returned as req.currentUser
+ * @param   {Object}  strongParams  Parameters to be returned from any strongParams calls
+ * @param   {Object}  params        Mocked value for req.params
+ */
+const mockExpressRouterObjects = async ({ currentUser, strongParams, params } = {}) => {
   let _currentUser = currentUser || (await userFactory.create());
   let _strongParams = strongParams;
   let _params = params;
 
-  // Holds data that is rendered by sendData for validation
-  let _renderedData = undefined;
+  let _renderedData = undefined; // Holds data that is rendered by sendData for validation
 
   const update = async (newParams) =>
     await mockExpressRouterObjects({

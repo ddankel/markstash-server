@@ -1,40 +1,37 @@
-const CollectionsController = require("../CollectionsController");
-const userFactory = require("../../../tests/factories/userFactory");
-const collectionFactory = require("../../../tests/factories/collectionFactory");
-const Collection = require("../../models/Collection");
 const mockExpressRouterObjects = require("../../../tests/helpers/mockExpressRouterObjects");
-const categoryFactory = require("../../../tests/factories/categoryFactory");
+const CollectionsController = require("../CollectionsController");
+const { Collection } = require("../../models");
+const { categoryFactory, collectionFactory } = require("../../../tests/factories");
 
 const relocateCollection = require("../../lib/relocation/relocateCollection");
 jest.mock("../../lib/relocation/relocateCollection");
 
 beforeEach(async () => {
-  currentUser = await userFactory.create();
-  mock = await mockExpressRouterObjects({ currentUser });
+  mock = await mockExpressRouterObjects();
 });
 
 describe("#index", () => {
   beforeEach(async () => {
-    category = await categoryFactory.create({ userPid: currentUser.pid });
-    myCollection1 = await collectionFactory.create({ categoryPid: category.pid });
-    myCollection2 = await collectionFactory.create({ categoryPid: category.pid });
+    category = await categoryFactory.create();
+    myCollection1 = await collectionFactory.create({ categoryPid: category.pid, ordinal: 2 });
+    myCollection2 = await collectionFactory.create({ categoryPid: category.pid, ordinal: 1 });
     otherCollection = await collectionFactory.create();
     mock = await mock.update({ params: { category_pid: category.pid } });
     await CollectionsController.index(mock.req, mock.res);
   });
 
-  it("renders just this user's collections", () => {
-    expect(mock.renderedData()).toMatchIds([myCollection1, myCollection2]);
+  it("renders just this user's collections, sorted by ordinal", () => {
+    expect(mock.renderedData()).toEqual([myCollection2, myCollection1]);
   });
 });
 
 describe("#create", () => {
   beforeEach(async () => {
     category = await categoryFactory.create();
-    title = "sample title";
+    collectionParams = collectionFactory.build();
     mock = await mock.update({
       params: { category_pid: category.pid },
-      strongParams: { title },
+      strongParams: collectionParams,
     });
     await CollectionsController.create(mock.req, mock.res);
   });
@@ -42,7 +39,7 @@ describe("#create", () => {
   it("creates a new collection", async () => {
     collections = await Collection.query();
     expect(collections.length).toBe(1);
-    expect(collections[0]).toMatchObject({ title, categoryPid: category.pid });
+    expect(collections[0]).toMatchObject({ ...collectionParams, categoryPid: category.pid });
   });
 
   it("renders the new collection", async () => {
@@ -60,15 +57,13 @@ describe("#show", () => {
   });
 
   it("renders the category", async () => {
-    expect(mock.renderedData()).toMatchIds(collection);
+    expect(mock.renderedData()).toEqual(collection);
   });
 });
 
 describe("#update", () => {
   beforeEach(async () => {
-    collection = await collectionFactory.create({
-      title: "initial title",
-    });
+    collection = await collectionFactory.create({ title: "initial title" });
     mock = await mock.update({
       params: { pid: collection.pid },
       strongParams: { title: "updated title" },
@@ -82,7 +77,7 @@ describe("#update", () => {
   });
 
   it("renders the updated category", async () => {
-    expect(mock.renderedData()).toMatchObject(await collection.$reload());
+    expect(mock.renderedData()).toEqual(await collection.$reload());
   });
 });
 
@@ -99,14 +94,13 @@ describe("#destroy", () => {
   });
 
   it("renders the destroyed collection", () => {
-    expect(mock.renderedData()).toMatchObject(collection);
+    expect(mock.renderedData()).toEqual(collection);
   });
 });
 
 describe("#relocate", () => {
   beforeEach(async () => {
     relocateCollection.mockImplementation(() => "sorted_list");
-
     category = await categoryFactory.create();
     collection = await collectionFactory.create();
     mock = await mock.update({

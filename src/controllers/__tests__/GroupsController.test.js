@@ -1,17 +1,13 @@
-const GroupsController = require("../GroupsController");
-const userFactory = require("../../../tests/factories/userFactory");
-const groupFactory = require("../../../tests/factories/groupFactory");
-const Group = require("../../models/Group");
 const mockExpressRouterObjects = require("../../../tests/helpers/mockExpressRouterObjects");
-const collectionFactory = require("../../../tests/factories/collectionFactory");
+const GroupsController = require("../GroupsController");
+const { Group } = require("../../models");
+const { collectionFactory, groupFactory } = require("../../../tests/factories");
 
 const relocateGroup = require("../../lib/relocation/relocateGroup");
-const { iteratee } = require("lodash");
 jest.mock("../../lib/relocation/relocateGroup");
 
 beforeEach(async () => {
-  currentUser = await userFactory.create();
-  mock = await mockExpressRouterObjects({ currentUser });
+  mock = await mockExpressRouterObjects();
 });
 
 describe("#index", () => {
@@ -31,10 +27,10 @@ describe("#index", () => {
 describe("#create", () => {
   beforeEach(async () => {
     collection = await collectionFactory.create();
-    title = "sample group title";
+    groupParams = groupFactory.build();
     mock = await mock.update({
       params: { collection_pid: collection.pid },
-      strongParams: { title },
+      strongParams: groupParams,
     });
     await GroupsController.create(mock.req, mock.res);
   });
@@ -42,7 +38,7 @@ describe("#create", () => {
   it("creates a new group", async () => {
     groups = await Group.query();
     expect(groups.length).toBe(2); // NOTE: collections spawn with a 'default' group
-    expect(groups[1]).toMatchObject({ title, collectionPid: collection.pid });
+    expect(groups[1]).toMatchObject({ ...groupParams, collectionPid: collection.pid });
   });
 
   it("renders the new group", async () => {
@@ -104,7 +100,6 @@ describe("#destroy", () => {
 describe("#relocate", () => {
   beforeEach(async () => {
     relocateGroup.mockImplementation(() => "sorted list");
-
     group = await groupFactory.create();
     collection = await collectionFactory.create();
     mock = await mock.update({

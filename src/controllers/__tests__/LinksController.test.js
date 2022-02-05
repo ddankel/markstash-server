@@ -1,13 +1,10 @@
-const LinksController = require("../LinksController");
-const userFactory = require("../../../tests/factories/userFactory");
-const linkFactory = require("../../../tests/factories/linkFactory");
-const Link = require("../../models/Link");
 const mockExpressRouterObjects = require("../../../tests/helpers/mockExpressRouterObjects");
-const groupFactory = require("../../../tests/factories/groupFactory");
+const LinksController = require("../LinksController");
+const { Link } = require("../../models");
+const { groupFactory, linkFactory } = require("../../../tests/factories");
 
 beforeEach(async () => {
-  currentUser = await userFactory.create();
-  mock = await mockExpressRouterObjects({ currentUser });
+  mock = await mockExpressRouterObjects();
 });
 
 describe("#index", () => {
@@ -30,7 +27,7 @@ describe("#create", () => {
     linkAttributes = linkFactory.build();
     mock = await mock.update({
       params: { group_pid: group.pid },
-      strongParams: { ...linkAttributes },
+      strongParams: linkAttributes,
     });
     await LinksController.create(mock.req, mock.res);
   });
@@ -43,7 +40,7 @@ describe("#create", () => {
 
   it("renders the new group", async () => {
     const link = await Link.query().first();
-    expect(mock.renderedData()).toMatchObject(link);
+    expect(mock.renderedData()).toEqual(link);
     expect(mock.status).toHaveBeenCalledWith(201);
   });
 });
