@@ -25,6 +25,7 @@ app.use(require("./routers/collections"));
 app.use(require("./routers/links"));
 app.use(require("./routers/categories"));
 app.use(require("./routers/groups"));
+app.use(require("./routers/profile"));
 
 app.get("/api/public", (req, res) => {
   res.json({ message: "This is the public endpoint" });

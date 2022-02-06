@@ -117,7 +117,7 @@ class BaseModel extends Model {
    */
   toJSON({ shallow, virtuals } = {}) {
     const obj = super.toJSON({ shallow, virtuals });
-    return omit(obj, "id");
+    return omit(obj, "id", "auth0Id");
   }
 
   /************************************************************
