@@ -3,6 +3,9 @@ const LinksController = require("../LinksController");
 const { Link } = require("../../models");
 const { groupFactory, linkFactory } = require("../../../tests/factories");
 
+const relocateLink = require("../../lib/relocation/relocateLink");
+jest.mock("../../lib/relocation/relocateLink");
+
 beforeEach(async () => {
   mock = await mockExpressRouterObjects();
 });
@@ -75,5 +78,32 @@ describe("#update", () => {
   it("renders the updated group", async () => {
     const subject = mock.renderedData();
     expect(subject).toEqual(await link.$reload());
+  });
+});
+
+describe("#relocate", () => {
+  beforeEach(async () => {
+    relocateLink.mockImplementation(() => "sorted list");
+    link = await linkFactory.create();
+    group = await groupFactory.create();
+    mock = await mock.update({
+      params: { pid: link.pid },
+      strongParams: { groupPid: group.pid, ordinal: 2 },
+    });
+    await LinksController.relocate(mock.req, mock.res);
+  });
+
+  it("calls the relocation library", () => {
+    expect(relocateLink).toHaveBeenCalledWith(
+      expect.objectContaining({
+        link: expect.objectContaining({ pid: link.pid }),
+        group: expect.objectContaining({ pid: group.pid }),
+        ordinal: 2,
+      })
+    );
+  });
+
+  it("renders the result of the relocation call", () => {
+    expect(mock.renderedData()).toEqual("sorted list");
   });
 });

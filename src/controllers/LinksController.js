@@ -1,5 +1,6 @@
 const Link = require("../models/Link");
 const Group = require("../models/Group");
+const { relocateLink } = require("../lib/relocation");
 
 const strongParams = (req) => req.parameters.require("link").permit("url", "title").value();
 
@@ -30,4 +31,18 @@ exports.destroy = async (req, res) => {
   const link = await req.authorize(Link.findByPid(req.params.pid));
   await Link.query().deleteById(link.id);
   res.sendData(link);
+};
+
+exports.relocate = async (req, res) => {
+  const params = req.parameters.require("link").permit("groupPid", "ordinal").value();
+
+  if (params.ordinal < 1) {
+    res.respond.badRequest(undefined, { message: "Ordinal must be greater than 0" });
+  }
+
+  const link = await Link.findByPid(req.params.pid);
+  const group = await Group.findByPid(params.groupPid);
+  const links = await relocateLink({ link, group, ordinal: params.ordinal });
+
+  res.sendData(links);
 };

@@ -30,6 +30,7 @@ describe("When the group is not already associated with the collection", () => {
     expect(subject).toBeInstanceOf(Group);
     expect(subject).toMatchObject({
       id: group.id,
+      collectionPid: collection.pid,
       ordinal: 4,
     });
   });

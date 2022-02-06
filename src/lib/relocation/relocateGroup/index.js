@@ -1,4 +1,4 @@
-const Group = require("../../../models/group");
+const Group = require("../../../models/Group");
 const moveToCollection = require("./moveToCollection");
 const moveItemToOrdinal = require("../shared/moveItemToOrdinal");
 const compactOrdinals = require("../shared/compactOrdinals");
@@ -36,8 +36,8 @@ module.exports = async function relocateGroup({ group, collection, ordinal }) {
  * Sibling groups are groups associated with the collection that is
  * associated with the subject sibling (ie the group's parent's children)
  *
- * @param   {Group}   group  The subject group
- * @param   {knex}  txn  Knex transaction to do work within
+ * @param   {Group} group   The subject group
+ * @param   {knex}  txn     Knex transaction to do work within
  *
  * @return  {Array<Collection>} The sibling collections
  */
