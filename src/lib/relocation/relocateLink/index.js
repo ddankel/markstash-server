@@ -1,5 +1,5 @@
 const Link = require("../../../models/Link");
-const moveToGroup = require("./moveToGroup");
+const moveLinkToGroup = require("./moveLinkToGroup");
 const moveItemToOrdinal = require("../shared/moveItemToOrdinal");
 const compactOrdinals = require("../shared/compactOrdinals");
 const Group = require("../../../models/Group");
@@ -17,7 +17,7 @@ module.exports = async function relocateLink({ link, group, ordinal }) {
   try {
     return await Group.transaction(async (txn) => {
       // Associate the link to the group
-      await moveToGroup(link, group, txn);
+      await moveLinkToGroup(link, group, txn);
 
       // Set the group's ordinal (and make room if necessary)
       const list = await siblingLinks(link, txn);

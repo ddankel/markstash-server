@@ -1,4 +1,4 @@
-const moveToGroup = require("../moveToGroup");
+const moveLinkToGroup = require("../moveLinkToGroup");
 
 const Link = require("../../../../models/link");
 const { linkFactory, groupFactory } = require("../../../../../tests/factories");
@@ -10,7 +10,7 @@ describe("when the link is already associated with the group", () => {
   });
 
   it("returns the unchanged link", async () => {
-    const subject = await moveToGroup(link, group);
+    const subject = await moveLinkToGroup(link, group);
 
     expect(subject).toEqual(link);
   });
@@ -24,7 +24,7 @@ describe("when the link is not already associated with the group", () => {
   });
 
   it("returns the new link", async () => {
-    const subject = await moveToGroup(link, group);
+    const subject = await moveLinkToGroup(link, group);
 
     expect(subject).toBeInstanceOf(Link);
     expect(subject).toMatchObject({

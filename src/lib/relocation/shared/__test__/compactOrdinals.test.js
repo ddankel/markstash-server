@@ -1,5 +1,4 @@
 const compactOrdinals = require("../compactOrdinals");
-
 const collectionFactory = require("../../../../../tests/factories/collectionFactory");
 
 beforeEach(async () => {

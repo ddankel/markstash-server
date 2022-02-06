@@ -7,7 +7,7 @@
  *
  * @return  {Link}          The updated Link
  */
-module.exports = async function moveToGroup(link, group, txn) {
+module.exports = async function moveLinkToGroup(link, group, txn) {
   if (link.groupPid === group.pid) {
     // already associated correctly
     return link;

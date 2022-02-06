@@ -1,8 +1,6 @@
-const moveToCollection = require("../moveToCollection");
-
+const moveGroupToCollection = require("../moveGroupToCollection");
 const Group = require("../../../../models/group");
-const groupFactory = require("../../../../../tests/factories/groupFactory");
-const collectionFactory = require("../../../../../tests/factories/collectionFactory");
+const { groupFactory, collectionFactory } = require("../../../../../tests/factories");
 
 describe("When the group is already associated with the collection", () => {
   beforeEach(async () => {
@@ -11,7 +9,7 @@ describe("When the group is already associated with the collection", () => {
   });
 
   it("returns the unchanged group", async () => {
-    const subject = await moveToCollection(group, collection);
+    const subject = await moveGroupToCollection(group, collection);
 
     expect(subject).toEqual(group);
   });
@@ -25,7 +23,7 @@ describe("When the group is not already associated with the collection", () => {
   });
 
   it("returns the new group", async () => {
-    const subject = await moveToCollection(group, collection);
+    const subject = await moveGroupToCollection(group, collection);
 
     expect(subject).toBeInstanceOf(Group);
     expect(subject).toMatchObject({

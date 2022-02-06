@@ -1,8 +1,6 @@
-const moveToCategory = require("../moveToCategory");
-
+const moveCollectionToCategory = require("../moveCollectionToCategory");
 const Collection = require("../../../../models/collection");
-const collectionFactory = require("../../../../../tests/factories/collectionFactory");
-const categoryFactory = require("../../../../../tests/factories/categoryFactory");
+const { collectionFactory, categoryFactory } = require("../../../../../tests/factories");
 
 describe("When the collection is already associated with the category and column", () => {
   beforeEach(async () => {
@@ -12,7 +10,7 @@ describe("When the collection is already associated with the category and column
   });
 
   it("returns the unchanged collection", async () => {
-    const subject = await moveToCategory(collection, category);
+    const subject = await moveCollectionToCategory(collection, category);
 
     expect(subject).toEqual(collection);
   });
@@ -27,7 +25,7 @@ describe("When the collection is not already associated with the category", () =
   });
 
   it("returns the new collection", async () => {
-    const subject = await moveToCategory(collection, category, column);
+    const subject = await moveCollectionToCategory(collection, category, column);
 
     expect(subject).toBeInstanceOf(Collection);
     expect(subject).toMatchObject({
@@ -47,7 +45,7 @@ describe("When the collection is in the wrong column", () => {
   });
 
   it("returns the new collection", async () => {
-    const subject = await moveToCategory(collection, category, column);
+    const subject = await moveCollectionToCategory(collection, category, column);
 
     expect(subject).toBeInstanceOf(Collection);
     expect(subject).toMatchObject({

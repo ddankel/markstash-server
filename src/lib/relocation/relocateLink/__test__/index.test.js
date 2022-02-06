@@ -1,16 +1,16 @@
 const relocateLink = require("..");
-
 const { linkFactory, groupFactory } = require("../../../../../tests/factories");
-const moveToGroup = require("../moveToGroup");
+
+const moveLinkToGroup = require("../moveLinkToGroup");
 const moveItemToOrdinal = require("../../shared/moveItemToOrdinal");
 const compactOrdinals = require("../../shared/compactOrdinals");
 
-jest.mock("../moveToGroup");
+jest.mock("../moveLinkToGroup");
 jest.mock("../../shared/moveItemToOrdinal");
 jest.mock("../../shared/compactOrdinals");
 
 beforeEach(async () => {
-  moveToGroup.mockImplementation(() => {});
+  moveLinkToGroup.mockImplementation(() => {});
   moveItemToOrdinal.mockImplementation(() => {});
   compactOrdinals.mockImplementation(() => "some result");
 
@@ -27,7 +27,7 @@ describe("when ran successfully", () => {
   });
 
   it("passes the objects through the sub-libraries", () => {
-    expect(moveToGroup).toHaveBeenCalledWith(link, group, knexTxn);
+    expect(moveLinkToGroup).toHaveBeenCalledWith(link, group, knexTxn);
     expect(moveItemToOrdinal).toHaveBeenCalledWith(link, list, ordinal, knexTxn);
     expect(compactOrdinals).toHaveBeenCalledWith(list, knexTxn);
   });

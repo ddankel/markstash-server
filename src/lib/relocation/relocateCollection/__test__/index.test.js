@@ -1,18 +1,16 @@
 const relocateCollection = require("..");
+const { collectionFactory, categoryFactory } = require("../../../../../tests/factories");
 
-const collectionFactory = require("../../../../../tests/factories/collectionFactory");
-const categoryFactory = require("../../../../../tests/factories/categoryFactory");
-
-const moveToCategory = require("../moveToCategory");
+const moveCollectionToCategory = require("../moveCollectionToCategory");
 const moveItemToOrdinal = require("../../shared/moveItemToOrdinal");
 const compactOrdinals = require("../../shared/compactOrdinals");
 
-jest.mock("../moveToCategory");
+jest.mock("../moveCollectionToCategory");
 jest.mock("../../shared/moveItemToOrdinal");
 jest.mock("../../shared/compactOrdinals");
 
 beforeEach(async () => {
-  moveToCategory.mockImplementation(() => {});
+  moveCollectionToCategory.mockImplementation(() => {});
   moveItemToOrdinal.mockImplementation(() => {});
   compactOrdinals.mockImplementation(() => "some result");
 
@@ -30,7 +28,7 @@ describe("when ran successfully", () => {
   });
 
   it("Pass the objects through the sub-librarires", async () => {
-    expect(moveToCategory).toHaveBeenCalledWith(collection, category, column, knexTxn);
+    expect(moveCollectionToCategory).toHaveBeenCalledWith(collection, category, column, knexTxn);
     expect(moveItemToOrdinal).toHaveBeenCalledWith(collection, list, ordinal, knexTxn);
     expect(compactOrdinals).toHaveBeenCalledWith(list, knexTxn);
   });

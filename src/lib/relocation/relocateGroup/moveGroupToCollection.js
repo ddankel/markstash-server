@@ -7,7 +7,7 @@
  *
  * @return  {Group}                   The updated Group
  */
-module.exports = async function moveToCollection(group, collection, txn) {
+module.exports = async function moveGroupToCollection(group, collection, txn) {
   if (group.collectionPid === collection.pid) {
     // already associated correctly
     return group;

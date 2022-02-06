@@ -1,5 +1,3 @@
-const Category = require("../../../models/category");
-
 /**
  * Update specified item to the specified ordinal
  *

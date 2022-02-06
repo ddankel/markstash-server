@@ -1,5 +1,5 @@
 const Group = require("../../../models/Group");
-const moveToCollection = require("./moveToCollection");
+const moveGroupToCollection = require("./moveGroupToCollection");
 const moveItemToOrdinal = require("../shared/moveItemToOrdinal");
 const compactOrdinals = require("../shared/compactOrdinals");
 
@@ -16,7 +16,7 @@ module.exports = async function relocateGroup({ group, collection, ordinal }) {
   try {
     return await Group.transaction(async (txn) => {
       // Associate the group to the collection
-      await moveToCollection(group, collection, txn);
+      await moveGroupToCollection(group, collection, txn);
 
       // Set the group's ordinal (and make room for it if necessary)
       const list = await siblingGroups(group, txn);

@@ -1,5 +1,5 @@
 const Collection = require("../../../models/collection");
-const moveToCategory = require("./moveToCategory");
+const moveCollectionToCategory = require("./moveCollectionToCategory");
 const moveItemToOrdinal = require("../shared/moveItemToOrdinal");
 const compactOrdinals = require("../shared/compactOrdinals");
 
@@ -17,7 +17,7 @@ module.exports = async function relocateCollection({ collection, category, colum
   try {
     return await Collection.transaction(async (txn) => {
       // Associate the collection to the category
-      await moveToCategory(collection, category, column, txn);
+      await moveCollectionToCategory(collection, category, column, txn);
 
       // Set the collection's ordinal (and make room for it if necessary)
       const list = await siblingCollections(collection, txn);

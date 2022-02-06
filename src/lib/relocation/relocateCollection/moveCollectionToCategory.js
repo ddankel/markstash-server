@@ -8,7 +8,7 @@
  *
  * @return  {Collection}              The updated Collection
  */
-module.exports = async function moveToCategory(collection, category, column, txn) {
+module.exports = async function moveCollectionToCategory(collection, category, column, txn) {
   if (collection.categoryPid === category.pid && collection.column === column) {
     // Already associated correctly
     return collection;
