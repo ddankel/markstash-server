@@ -76,7 +76,7 @@ router.post("/categories/:category_pid/collections", CollectionsController.creat
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.get("/collections/:id", CollectionsController.show);
+router.get("/collections/:pid", CollectionsController.show);
 
 /**
  * @swagger
@@ -102,7 +102,7 @@ router.get("/collections/:id", CollectionsController.show);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.patch("/collections/:id", CollectionsController.update);
+router.patch("/collections/:pid", CollectionsController.update);
 
 /**
  * @swagger
@@ -126,7 +126,7 @@ router.patch("/collections/:id", CollectionsController.update);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.delete("/collections/:id", CollectionsController.destroy);
+router.delete("/collections/:pid", CollectionsController.destroy);
 
 /**
  * @swagger
@@ -176,6 +176,6 @@ router.delete("/collections/:id", CollectionsController.destroy);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.patch("/collections/:id/relocate", CollectionsController.relocate);
+router.patch("/collections/:pid/relocate", CollectionsController.relocate);
 
 module.exports = router;

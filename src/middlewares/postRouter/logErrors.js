@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const enabledEnvironments = ["development", "test"];
+const enabledEnvironments = ["development"];
 
 /**
  * The current datetime

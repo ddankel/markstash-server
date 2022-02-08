@@ -2,7 +2,8 @@ const Link = require("../models/Link");
 const Group = require("../models/Group");
 const { relocateLink } = require("../lib/relocation");
 
-const strongParams = (req) => req.parameters.require("link").permit("url", "title").value();
+const strongParams = (req) =>
+  req.parameters.require("link").permit("url", "title", "favicon").value();
 
 exports.index = async (req, res) => {
   const group = await req.authorize(Group.findByPid(req.params.group_pid));

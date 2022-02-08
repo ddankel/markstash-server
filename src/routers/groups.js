@@ -76,7 +76,7 @@ router.post("/collections/:collection_pid/groups", GroupsController.create);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.get("/groups/:id", GroupsController.show);
+router.get("/groups/:pid", GroupsController.show);
 
 /**
  * @swagger
@@ -102,7 +102,7 @@ router.get("/groups/:id", GroupsController.show);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.patch("/groups/:id", GroupsController.update);
+router.patch("/groups/:pid", GroupsController.update);
 
 /**
  * @swagger
@@ -126,7 +126,7 @@ router.patch("/groups/:id", GroupsController.update);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.delete("/groups/:id", GroupsController.destroy);
+router.delete("/groups/:pid", GroupsController.destroy);
 
 /**
  * @swagger
@@ -170,6 +170,6 @@ router.delete("/groups/:id", GroupsController.destroy);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.patch("/groups/:id/relocate", GroupsController.relocate);
+router.patch("/groups/:pid/relocate", GroupsController.relocate);
 
 module.exports = router;
