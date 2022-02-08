@@ -33,6 +33,7 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-oauth2-jwt-bearer": "^1.1.0",
+    "helmet": "^5.0.2",
     "knex": "^0.95.14",
     "knex-utils": "^5.5.0",
     "lodash": "^4.17.21",
