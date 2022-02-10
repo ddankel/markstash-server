@@ -1,6 +1,5 @@
 const { ValidationError } = require("objection");
-const categoryFactory = require("../../../tests/factories/categoryFactory");
-const userFactory = require("../../../tests/factories/userFactory");
+const { categoryFactory, userFactory } = require("../../../tests/factories");
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -12,34 +11,32 @@ it("has a valid factory", async () => {
 });
 
 describe(".ordinal", () => {
-  it("sets the default on create", async () => {
-    const category1 = await categoryFactory.create({ title: "1", ordinal: undefined });
-    expect(category1.ordinal).toBe(1);
-
-    const category2 = await categoryFactory.create({ title: "2", ordinal: undefined });
-    expect(category2.ordinal).toBe(2);
-
-    await categoryFactory.create({ ordinal: 6 });
-
-    const category3 = await categoryFactory.create({ title: "3", ordinal: undefined });
-    expect(category3.ordinal).toBe(7);
+  beforeEach(async () => {
+    userPid = (await userFactory.create()).pid;
   });
 
-  it("sets the default on update", async () => {
-    const category = await categoryFactory.create({ title: "1", ordinal: 5 });
-    await category.$query().patch({ ordinal: undefined });
-    expect(category.ordinal).toBe(1);
-
-    await categoryFactory.create({ ordinal: 4 });
-    await category.$query().patch({ ordinal: undefined });
-    expect(category.ordinal).toBe(5);
-  });
-
-  it("prevents duplicates", async () => {
-    await categoryFactory.create({ ordinal: 2 });
+  it("invalidates when not unique per user", async () => {
+    await categoryFactory.create({ ordinal: 2, userPid });
     await expect(async () => {
-      return await categoryFactory.create({ ordinal: 2 });
+      return await categoryFactory.create({ ordinal: 2, userPid });
     }).rejects.toThrow(ValidationError);
+  });
+
+  it("defaults to 1 for a user's first category", async () => {
+    const category = await categoryFactory.create({ ordinal: undefined });
+    expect(category.ordinal).toBe(1);
+  });
+
+  it("defaults to max+1 for user's subsequent categories", async () => {
+    await categoryFactory.create({ ordinal: 5, userPid });
+    const category = await categoryFactory.create({ ordinal: undefined, userPid });
+    expect(category.ordinal).toBe(6);
+  });
+
+  it("ignores ordinals in other users' categories", async () => {
+    await categoryFactory.create({ ordinal: 5 });
+    const category = await categoryFactory.create({ ordinal: undefined, userPid });
+    expect(category.ordinal).toBe(1);
   });
 });
 

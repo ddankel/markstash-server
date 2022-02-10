@@ -12,6 +12,11 @@ const categorieschema = {
       description: "The instance's public unique identifier",
       example: "a4jki9",
     },
+    userPid: {
+      type: "string",
+      description: "PID of the user this category is associated with",
+      example: "3j9xy",
+    },
     title: {
       type: "string",
       description: "The category's name",
