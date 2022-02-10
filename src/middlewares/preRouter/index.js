@@ -1,5 +1,6 @@
 const express = require("express");
 const helmet = require("helmet");
+const cors = require("cors");
 const auth0Authentication = require("./auth0Authentication");
 const attachCurrentUser = require("./attachCurrentUser");
 const attachErrorResponder = require("./attachErrorResponder");
@@ -10,7 +11,12 @@ const attachAuthorizer = require("./attachAuthorizer");
 const useMiddlewares = (app) => {
   app.use(express.json()); //              Format request body as json
   app.use(helmet()); //                    Helmet security package
-  app.use(auth0Authentication); //         Authenticate Bearer token with Auth0
+  app.use(cors({ origin: process.env.AUTH0_ORIGIN }));
+
+  if (process.env.NODE_ENV !== "swagger") {
+    app.use(auth0Authentication); //         Authenticate Bearer token with Auth0
+  }
+
   app.use(attachCurrentUser); //           Find or create currentUser from auth0 user id
   app.use(attachAuthorizer); //            Attach model authorization checker
   app.use(attachErrorResponder); //        Attach responders for common errors/responses

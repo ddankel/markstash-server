@@ -1,6 +1,7 @@
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const swaggerComponents = require("./components");
+const swaggerAuth0 = require("./swaggerAuth0");
 
 const swaggerDefinition = {
   openapi: "3.0.0",
@@ -8,10 +9,6 @@ const swaggerDefinition = {
     title: process.env.npm_package_name,
     version: process.env.npm_package_version,
     description: process.env.npm_package_description,
-    // license: {
-    //   name: "Licensed Under MIT",
-    //   url: "https://spdx.org/licenses/MIT.html",
-    // },
     contact: {
       name: process.env.npm_package_author_name,
       url: "https://jsonplaceholder.typicode.com",
@@ -35,16 +32,21 @@ const swaggerSpec = swaggerJSDoc(options);
 // Add components
 swaggerSpec.components = swaggerComponents;
 
-// const util = require("util");
-// console.log(
-//   "SWAGGERSPEC:",
-//   util.inspect(swaggerSpec.components.requestBodies.Category, {
-//     showHidden: false,
-//     depth: null,
-//     colors: true,
-//   })
-// );
+const useSwagger = (app) => {
+  app.use(swaggerAuth0);
 
-const useSwagger = (app) => app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use(
+    "/docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, {
+      swaggerOptions: {
+        requestInterceptor: (request) => {
+          request.headers.Authorization = "Bearer swagger|test_token:Swagger";
+          return request;
+        },
+      },
+    })
+  );
+};
 
 module.exports = useSwagger;

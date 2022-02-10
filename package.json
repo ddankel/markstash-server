@@ -12,7 +12,8 @@
     "test": "jest --watch --runInBand",
     "coverage": "jest --coverage",
     "migrate": "knex migrate:latest",
-    "debug": "nodemon src/debug.js"
+    "debug": "nodemon src/debug.js",
+    "swagger": "NODE_ENV=swagger nodemon src/server.js"
   },
   "jest": {
     "testMatch": [

@@ -10,8 +10,8 @@ const _ = require("lodash");
  */
 const extractNameFromSchemaFile = (file) => {
   const fileName = _.last(file.split("/"));
-  const model = fileName.split(".")[0];
-  return model[0].toUpperCase() + model.substring(1);
+  const model = fileName.split(".")[0].replace(/Schema$/, "");
+  return _.upperFirst(model);
 };
 
 const schemas = {};
@@ -21,7 +21,7 @@ glob.sync("./src/models/schemas/**/*Schema.js").forEach((file) => {
   const schemaFile = path.resolve(file);
   const schemaName = extractNameFromSchemaFile(file);
   const schema = require(schemaFile);
-  schema.properties = _.omit(schema.properties, "id");
+  schema.properties = _.omit(schema.properties, "id", "auth0Id");
 
   schemas[schemaName] = schema;
 });
