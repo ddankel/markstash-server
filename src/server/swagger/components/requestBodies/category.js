@@ -1,5 +1,5 @@
 const { buildRequestBodySchema } = require("./utils");
-const schema = require("../../../../models/category/category.schema");
+const schema = require("../../../../models/schemas/categorySchema");
 
 const label = "category";
 const disallowedProperties = ["id", "ordinal", "createdAt", "updatedAt"];

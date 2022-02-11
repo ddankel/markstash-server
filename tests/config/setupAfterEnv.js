@@ -1,4 +1,10 @@
 const { transaction, Model, knexSnakeCaseMappers } = require("objection");
+const toMatchIds = require("./setup/toMatchIds");
+const toMatchPids = require("./setup/toMatchPids");
+
+// Import custom matchers
+expect.extend(toMatchIds);
+expect.extend(toMatchPids);
 
 // Initialize knex.
 const config = {
@@ -19,7 +25,7 @@ Model.knex(knex);
 
 global.beforeAll(async () => {
   // Reset DB schema via migrations
-  // await knex.migrate.rollback({}, true);
+  await knex.migrate.rollback({}, true);
   await knex.migrate.latest();
   global.knex = knex;
   global.txn = null;

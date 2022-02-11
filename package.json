@@ -12,7 +12,8 @@
     "test": "jest --watch --runInBand",
     "coverage": "jest --coverage",
     "migrate": "knex migrate:latest",
-    "debug": "nodemon src/debug.js"
+    "debug": "nodemon src/debug.js",
+    "swagger": "NODE_ENV=swagger nodemon src/server.js"
   },
   "jest": {
     "testMatch": [
@@ -28,15 +29,19 @@
     ]
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "express-oauth2-jwt-bearer": "^1.1.0",
+    "helmet": "^5.0.2",
     "knex": "^0.95.14",
     "knex-utils": "^5.5.0",
     "lodash": "^4.17.21",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "objection": "^3.0.0",
+    "objection-unique": "^1.2.2",
     "strong-params": "https://github.com/ddankel/strong-params.git",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0"

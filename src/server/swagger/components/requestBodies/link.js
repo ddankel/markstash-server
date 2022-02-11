@@ -1,5 +1,5 @@
 const { buildRequestBodySchema } = require("./utils");
-const schema = require("../../../../models/link/link.schema");
+const schema = require("../../../../models/schemas/linkSchema");
 
 const label = "link";
 const disallowedProperties = ["id", "groupPid", "ordinal", "createdAt", "updatedAt"];

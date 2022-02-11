@@ -1,7 +1,9 @@
-const relocateCollection = require("./relocate_collection");
-const relocateGroup = require("./relocate_group");
+const relocateCollection = require("./relocateCollection");
+const relocateGroup = require("./relocateGroup");
+const relocateLink = require("./relocateLink");
 
 module.exports = {
   relocateCollection,
   relocateGroup,
+  relocateLink,
 };

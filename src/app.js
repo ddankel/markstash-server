@@ -7,7 +7,10 @@ const useSwagger = require("./server/swagger");
 const app = express();
 require("express-async-errors");
 require("./server/objectionjs");
-useSwagger(app);
+
+if (process.env.NODE_ENV === "swagger") {
+  useSwagger(app);
+}
 
 // Pre-Route Middleware
 middlewares.usePreRouteMiddlewares(app);
@@ -18,6 +21,18 @@ app.use(require("./routers/collections"));
 app.use(require("./routers/links"));
 app.use(require("./routers/categories"));
 app.use(require("./routers/groups"));
+app.use(require("./routers/profile"));
+
+// AUTH TESTING START
+const checkJwt = require("./middlewares/preRouter/auth0Authentication");
+app.get("/api/public", (req, res) => {
+  res.json({ message: "This is the public endpoint" });
+});
+
+app.get("/api/protected", checkJwt, async (req, res) => {
+  res.json({ message: "this is the private endpoint", payload: req.auth.payload });
+});
+// AUTH TESTING END
 
 // Post-Route Middleware
 middlewares.usePostRouteMiddlewares(app);

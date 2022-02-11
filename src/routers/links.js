@@ -1,6 +1,6 @@
 const express = require("express");
 const router = new express.Router();
-const LinksController = require("../controllers/links_controller");
+const LinksController = require("../controllers/LinksController");
 
 /**
  * @swagger
@@ -78,7 +78,7 @@ router.post("/groups/:group_pid/links", LinksController.create);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.get("/links/:id", LinksController.show);
+router.get("/links/:pid", LinksController.show);
 
 /**
  * @swagger
@@ -104,7 +104,7 @@ router.get("/links/:id", LinksController.show);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.patch("/links/:id", LinksController.update);
+router.patch("/links/:pid", LinksController.update);
 
 /**
  * @swagger
@@ -128,6 +128,6 @@ router.patch("/links/:id", LinksController.update);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.delete("/links/:id", LinksController.destroy);
+router.delete("/links/:pid", LinksController.destroy);
 
 module.exports = router;

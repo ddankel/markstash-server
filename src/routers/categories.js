@@ -1,6 +1,6 @@
 const express = require("express");
 const router = new express.Router();
-const CategoriesController = require("../controllers/categories_controller");
+const CategoriesController = require("../controllers/CategoriesController");
 
 /**
  * @swagger
@@ -75,7 +75,7 @@ router.post("/categories", CategoriesController.create);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.get("/categories/:id", CategoriesController.show);
+router.get("/categories/:pid", CategoriesController.show);
 
 /**
  * @swagger
@@ -102,7 +102,7 @@ router.get("/categories/:id", CategoriesController.show);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.patch("/categories/:id", CategoriesController.update);
+router.patch("/categories/:pid", CategoriesController.update);
 
 /**
  * @swagger
@@ -127,6 +127,6 @@ router.patch("/categories/:id", CategoriesController.update);
  *       default:
  *         $ref: '#/components/responses/Error'
  */
-router.delete("/categories/:id", CategoriesController.destroy);
+router.delete("/categories/:pid", CategoriesController.destroy);
 
 module.exports = router;
