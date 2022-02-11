@@ -40,7 +40,7 @@ describe(".ordinal", () => {
 });
 
 describe("#owner", () => {
-  it("returns the parent's owner", async () => {
+  it("returns the instance's owner", async () => {
     const group = await groupFactory.create();
     const link = await linkFactory.create({ groupPid: group.pid });
 

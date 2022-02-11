@@ -25,7 +25,7 @@ Model.knex(knex);
 
 global.beforeAll(async () => {
   // Reset DB schema via migrations
-  // await knex.migrate.rollback({}, true);
+  await knex.migrate.rollback({}, true);
   await knex.migrate.latest();
   global.knex = knex;
   global.txn = null;

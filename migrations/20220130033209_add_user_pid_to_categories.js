@@ -11,6 +11,7 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
   return knex.schema.table("categories", (table) => {
+    table.dropForeign("user_pid");
     table.dropColumn("user_pid");
   });
 };

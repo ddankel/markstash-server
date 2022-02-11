@@ -41,6 +41,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "objection": "^3.0.0",
+    "objection-unique": "^1.2.2",
     "strong-params": "https://github.com/ddankel/strong-params.git",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0"

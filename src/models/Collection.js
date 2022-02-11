@@ -3,9 +3,10 @@ const { copyWithoutUndefined } = require("knex-utils");
 
 const BaseModel = require("./BaseModel");
 const collectionSchema = require("./schemas/collectionSchema");
-const ModelValidationError = require("../errors/ModelValidationError");
 
-class Collection extends BaseModel {
+const unique = require("objection-unique")({ fields: [["categoryPid", "column", "ordinal"]] });
+
+class Collection extends unique(BaseModel) {
   static get tableName() {
     return "collections";
   }
@@ -35,11 +36,6 @@ class Collection extends BaseModel {
     };
   }
 
-  async owner() {
-    const parent = await this.$relatedQuery("category");
-    return parent.owner();
-  }
-
   /************************************************************
    *  CALLBACKS
    */
@@ -50,7 +46,15 @@ class Collection extends BaseModel {
 
   async $beforeSave(payload, _opt, queryContext) {
     if (!payload.ordinal) await this.#assignDefaultOrdinal(payload, queryContext);
-    await this.#validateUniqueOrdinal(payload, queryContext);
+  }
+
+  /************************************************************
+   *  PUBLIC INSTANCE METHODS
+   */
+
+  async owner() {
+    const parent = await this.$relatedQuery("category");
+    return parent.owner();
   }
 
   /************************************************************
@@ -83,25 +87,6 @@ class Collection extends BaseModel {
     const siblings = await this.#fetchSiblings(payload, queryContext);
     const ordinal = siblings.length ? Math.max(...siblings.map((item) => item.ordinal)) + 1 : 1;
     payload.ordinal = this.ordinal = ordinal;
-  }
-
-  /**
-   * Validate that .ordinal is unique among peer categories
-   *
-   * @async
-   */
-  async #validateUniqueOrdinal(payload, queryContext) {
-    if (!payload.ordinal) return;
-
-    const siblings = await this.#fetchSiblings(payload, queryContext);
-    const ordinals = siblings.map((item) => item.ordinal);
-    if (!ordinals.includes(payload.ordinal)) return;
-
-    throw new ModelValidationError({
-      field: "ordinal",
-      message: "should be unique",
-      keyword: "unique",
-    });
   }
 }
 

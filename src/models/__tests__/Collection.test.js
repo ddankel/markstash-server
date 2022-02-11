@@ -78,7 +78,7 @@ describe("on creation", () => {
 });
 
 describe("#owner", () => {
-  it("returns the parent's owner", async () => {
+  it("returns the instance's owner", async () => {
     const category = await categoryFactory.create();
     const collection = await collectionFactory.create({ categoryPid: category.pid });
 

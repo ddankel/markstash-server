@@ -3,9 +3,10 @@ const BaseModel = require("./BaseModel");
 const { copyWithoutUndefined } = require("knex-utils");
 
 const linkSchema = require("./schemas/linkSchema");
-const ModelValidationError = require("../errors/ModelValidationError");
 
-class Link extends BaseModel {
+const unique = require("objection-unique")({ fields: [["groupPid", "ordinal"]] });
+
+class Link extends unique(BaseModel) {
   static get tableName() {
     return "links";
   }
@@ -33,7 +34,6 @@ class Link extends BaseModel {
 
   async $beforeSave(payload, _opt, queryContext) {
     if (!payload.ordinal) await this.#assignDefaultOrdinal(payload, queryContext);
-    await this.#validateUniqueOrdinal(payload, queryContext);
   }
 
   /************************************************************
@@ -83,25 +83,6 @@ class Link extends BaseModel {
     const siblings = await this.#fetchSiblings(payload, queryContext);
     const ordinal = siblings.length ? Math.max(siblings.map((item) => item.ordinal)) + 1 : 1;
     payload.ordinal = this.ordinal = ordinal;
-  }
-
-  /**
-   * Validate that .ordinal is unique among peer categories
-   *
-   * @async
-   */
-  async #validateUniqueOrdinal(payload, queryContext) {
-    if (!payload.ordinal) return;
-
-    const siblings = await this.#fetchSiblings(payload, queryContext);
-    const ordinals = siblings.map((row) => row.ordinal);
-    if (!ordinals.includes(payload.ordinal)) return;
-
-    throw new ModelValidationError({
-      field: "ordinal",
-      message: "should be unique",
-      keyword: "unique",
-    });
   }
 }
 

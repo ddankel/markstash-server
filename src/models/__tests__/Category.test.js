@@ -41,7 +41,7 @@ describe(".ordinal", () => {
 });
 
 describe("#owner", () => {
-  it("returns the parent's owner", async () => {
+  it("returns the instance's owner", async () => {
     const user = await userFactory.create();
     const category = await categoryFactory.create({ userPid: user.pid });
 
