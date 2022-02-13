@@ -9,7 +9,7 @@
   "scripts": {
     "serve": "nodemon src/server.js",
     "start": "node src/server.js",
-    "test": "jest --watch --runInBand",
+    "test": "jest --watch",
     "coverage": "jest --coverage",
     "migrate": "knex migrate:latest",
     "debug": "nodemon src/debug.js",
@@ -21,6 +21,8 @@
       "**/?(*.)+(spec|test).[jt]s?(x)"
     ],
     "testEnvironment": "node",
+    "globalSetup": "<rootDir>/tests/config/globalSetup.js",
+    "globalTeardown": "<rootDir>/tests/config/globalTeardown.js",
     "setupFiles": [
       "<rootDir>/tests/config/setupTests.js"
     ],
