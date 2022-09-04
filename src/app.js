@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === "swagger") {
 middlewares.usePreRouteMiddlewares(app);
 
 // Application Routes
-// app.get("/", (req, res) => res.redirect(302, "https://github.com/ddankel/task-app--nodejs"));
+app.get("/", (req, res) => res.redirect(302, "https://github.com/ddankel/markstash-server"));
 app.use(require("./routers/collections"));
 app.use(require("./routers/links"));
 app.use(require("./routers/categories"));

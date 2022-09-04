@@ -54,7 +54,6 @@ module.exports = {
       database: `${process.env.MYSQL_BASENAME}_dev`,
     },
     pool: { min: 2, max: 5 },
-    debug: true,
     ...knexSnakeCaseMappers(),
   },
 };
